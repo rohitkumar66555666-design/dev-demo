@@ -1,4 +1,5 @@
 // app/_layout.tsx
+import "../../global.css"
 import { Stack } from 'expo-router';
 import { DarkTheme, ThemeProvider } from '@react-navigation/native';
 
