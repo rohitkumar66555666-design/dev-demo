@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Alert, View, Text, FlatList, TouchableOpacity, TextInput, Button } from 'react-native';
+import { Alert, View, Text, FlatList, TouchableOpacity, TextInput, Button, Pressable } from 'react-native';
 import { supabase } from '../lib/supabase';
 import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Home() {
   const [events, setEvents] = useState<any[]>([]);
@@ -42,6 +43,8 @@ export default function Home() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#000', padding: 16 }}>
+     
+
       {/* --- Add Event Form --- */}
       <View style={{ marginBottom: 24 }}>
         <Text style={{ color: 'white', fontSize: 18, marginBottom: 8 }}>Add Event</Text>
@@ -70,10 +73,28 @@ export default function Home() {
         renderItem={({ item }) => (
           <Link href={`/events/${item.id}`}>
             <TouchableOpacity>
-              <View style={{ padding: 16, borderBottomWidth: 1, borderColor: '#333' }}>
-                <Text style={{ fontSize: 18, color: 'white' }}>{item.name}</Text>
-                {/* Optionally show more details */}
-              </View>
+            <View style={{
+  width: '100%',
+  backgroundColor: '#222',        // dark background
+  marginBottom: 12,
+  borderRadius: 8,                // rounded corners
+  paddingVertical: 12,            // vertical padding for height
+  paddingHorizontal: 16,          // horizontal padding for text spacing
+  elevation: 2,                   // subtle shadow on Android
+  shadowColor: '#000',            // shadow on iOS
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.2,
+  shadowRadius: 2,
+}}>
+  <Text style={{
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  }}>
+    {item.name}
+  </Text>
+</View>
+
             </TouchableOpacity>
           </Link>
         )}

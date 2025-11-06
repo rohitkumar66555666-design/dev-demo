@@ -7,16 +7,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { Stack } from "expo-router"
 import AssetItem from '../../../components/AssetItem';
 
-
 export default function EventDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const { data: event, isLoading, error } = useQuery({
     queryKey: ['event', id],
     queryFn: () => getEvent(id),
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
   });
-
-  
 
   if (isLoading) {
     return (
@@ -37,10 +38,18 @@ export default function EventDetails() {
   return (
     <View className='flex-1 bg-black'>
       <Stack.Screen options={{ title: event.name}} />
-
+      <View style={{ padding: 10, alignItems: 'flex-end' }}>
+        <Link href={`/events/${id}/share`} asChild>
+          <Pressable style={{ backgroundColor: '#222', padding: 10, borderRadius: 25, flexDirection: 'row', alignItems: 'center' }}>
+            <Ionicons name="share-outline" size={22} color='white' />
+            <Text style={{ color: 'white', marginLeft: 7 }}>Share Event</Text>
+          </Pressable>
+        </Link>
+      </View>
       <FlatList
-      data={event.assets}
-      renderItem={({ item }) => <AssetItem asset={item} />}
+        data={event.assets}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({ item }) => <AssetItem asset={item} />}
       />
       <Link href={`/events/${id}/camera`} asChild>
         <Pressable className='absolute bottom-10 right-4 flex-row items-center justify-center bg-white p-6 rounded-full'>
@@ -50,6 +59,7 @@ export default function EventDetails() {
     </View>
   );
 }
+
 export async function getEvents() {
   const { data } = await supabase.from("events").select("*").throwOnError();
   return data;

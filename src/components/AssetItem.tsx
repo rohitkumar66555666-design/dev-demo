@@ -1,24 +1,39 @@
-import { useWindowDimensions, ScrollView, Image, Text } from "react-native";
-import { Tables } from "../types/database.types";
+import React from 'react';
+import { View, Image, StyleSheet, Text, useWindowDimensions } from 'react-native';
 
-export default function AssetItem({ asset }: { asset: Tables<'assets'> }) {
+export default function DisplayPhotoComponent() {
   const { width } = useWindowDimensions();
-  const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL ?? "";
-  if (!asset.asset_id) return null;
-  // Detect type by extension for future (video support)
-  const isVideo = asset.asset_id.match(/\.(mp4|mov)$/i);
-  const url = `${SUPABASE_URL}/storage/v1/object/public/photos/${asset.asset_id}`;
+
+  // The specific signed URL you provided
+  const imageUrl = "https://supabase.com/dashboard/project/ljcxswgrxjauwxcqjgsu/storage/files/buckets/photo";
+
   return (
-    <ScrollView>
-      {!isVideo ? (
-        <Image
-          source={{ uri: url }}
-          style={{ width, height: width * 0.6, backgroundColor: "#111" }}
-          resizeMode="cover"
-        />
-      ) : (
-        <Text style={{ color: "white" }}>Video support coming soon...</Text>
-      )}
-    </ScrollView>
+    <View style={styles.container}>
+      <Image
+        source={{ uri: imageUrl }}
+        // The width and height are required for the image to be visible
+       
+      />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+  },
+  title: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  image: {
+    height: 400, // You can adjust the height as you like
+    borderRadius: 12,
+    backgroundColor: '#333', // A placeholder color while the image loads
+  },
+});
